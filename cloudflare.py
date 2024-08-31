@@ -10,10 +10,14 @@ import hashlib
 import requests
 import dateutil.parser as dp
 from google.cloud import datastore
+from dotenv import load_dotenv
+load_dotenv()
 
 AUTH_EMAIL = os.environ["AUTH_EMAIL"]
 AUTH_KEY = os.environ["AUTHKEY"]
 
+if not AUTH_EMAIL or not AUTH_KEY:
+    raise EnvironmentError("Required environment variables 'AUTH_EMAIL' and/or 'AUTHKEY' are not set.")
 
 def update_cf_trans(ip_address):
     """

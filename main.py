@@ -16,6 +16,8 @@ import domcheck
 import requests
 from cryptography.fernet import Fernet
 from feedgen.feed import FeedGenerator
+from dotenv import load_dotenv
+import os
 from flask import (
     Flask,
     abort,
@@ -206,11 +208,13 @@ def validate_email_with_tld(email):
     Validate email with TLD
     """
     if validate_email(email):
-        tld = re.search("@[\w.]+", email)
-        if tld:
-            tld = tld.group()
-            if "." in tld:
-                return True
+    # Use raw string to avoid SyntaxWarning
+        tld = re.search(r"@[\w.]+", email)
+    if tld:
+        tld = tld.group()
+        # Ensure there's a dot in the TLD after the '@'
+        if "." in tld:
+            return True
     return False
 
 
